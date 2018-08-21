@@ -16,7 +16,6 @@ WORKDIR /app
 ARG R_VER
 ENV R_VER=${R_VER:-3.3.3} 
 
-
 # Setup EPEL && 
 RUN yum -y install epel-release && yum -y update \
     && echo "LANG=en_US.utf8" >> /etc/locale.conf \
