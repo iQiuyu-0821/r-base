@@ -8,6 +8,9 @@
 
 FROM centos:centos7
 
+COPY . /app
+WORKDIR /app
+
 # Build instructions: 
 # docker build -t centos7-mro . --build-arg R_VER=3.3.3
 ARG R_VER
@@ -32,7 +35,7 @@ RUN yum -y install wget make bzip2-devel gcc-c++ gcc-gfortran libX11-devel libic
   libXrender-devel libffi libgcc libicu libmpc libquadmath-devel libselinux libsepol libstdc++ \
   libstdc++-devel libxcb libxcb-devel mpfr pcre perl perl-Data-Dumper perl-Text-Unidecode \
   libgfortran libgomp freetype fontconfig libXrender libpng pango-devel.x86_64 libXt-devel \
-  cairo-devel.x86_64 NLopt-devel.x86_64 curl.x86_64 \
+  cairo-devel.x86_64 NLopt-devel.x86_64 curl.x86_64 postgresql-devel \
   perl-libintl texinfo texlive-epsf xorg-x11-proto-devel xz-libs zlib which \
   && yum groupinstall X11 -y \
   && yum clean all
@@ -68,4 +71,6 @@ RUN rm -rf microsoft-r-open-${R_VER}.tar.gz
 RUN rm -rf microsoft-r-open
 RUN rm -rf install-littler.sh 
 
-CMD ["R CMD Rserve --RS-enable-remote"] 
+ADD start.sh /usr/local/bin/start.sh
+RUN chmod 777 /usr/local/bin/start.sh
+CMD /usr/local/bin/start.sh
